@@ -35,22 +35,22 @@ namespace ariel {
     public:
 
         // default constructor
-        BinaryTree();
+        BinaryTree() { this->root = nullptr; }
 
         // copy constructor
         BinaryTree(BinaryTree* binary_tree);
 
         // de-constructor
-        ~BinaryTree();
+        ~BinaryTree() {}
 
         // add root method
-        BinaryTree& add_root(const T &data);
+        BinaryTree<T>& add_root(const T &data);
 
         // add left method
-        BinaryTree& add_left(const T &parent_data, const T &child_data);
+        BinaryTree<T>& add_left(const T &parent_data, const T &child_data);
 
         // add right method
-        BinaryTree& add_right(const T &parent_data, const T &child_data);
+        BinaryTree<T>& add_right(const T &parent_data, const T &child_data);
 
         // output
         // using other typename symbol

@@ -12,12 +12,23 @@
 #include "BinaryTree.hpp"
 
 using namespace std;
+using namespace ariel;
 
 namespace ariel {
 
+    template<typename T>
+    BinaryTree<T>& BinaryTree<T>::add_root(const T &data) { return *this; }
+
+    template<typename T>
+    BinaryTree<T>& BinaryTree<T>::add_left(const T &parent_data, const T &child_data) { return *this; }
+
+    template<typename T>
+    BinaryTree<T>& BinaryTree<T>::add_right(const T &parent_data, const T &child_data) { return *this; }
+
     // implement out operator
-//    template<typename T> ostream& operator<<(ostream& out, const BinaryTree<T> &binary_tree) {
-//        out << "output test";
-//        return out;
-//    }
+    template<typename T>
+    ostream& operator<<(ostream& out, const BinaryTree<T> &binary_tree) {
+        out << "output test";
+        return out;
+    }
 }
