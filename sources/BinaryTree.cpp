@@ -16,8 +16,8 @@ using namespace std;
 namespace ariel {
 
     // implement out operator
-    template<typename T> ostream& operator<<(ostream& out, const BinaryTree<T> &binary_tree) {
-        out << "output test";
-        return out;
-    }
+//    template<typename T> ostream& operator<<(ostream& out, const BinaryTree<T> &binary_tree) {
+//        out << "output test";
+//        return out;
+//    }
 }

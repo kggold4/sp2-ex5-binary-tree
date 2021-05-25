@@ -25,7 +25,8 @@ namespace ariel {
         struct Node {
             T data;
             Node * parent, * left, * right;
-            Node(const T data) : data(data) {}
+            Node(const T data, Node * parent = nullptr, Node * left = nullptr, Node * right = nullptr)
+            : data(data), parent(parent), left(left), right(right) {}
         };
 
         // tree root
@@ -34,22 +35,22 @@ namespace ariel {
     public:
 
         // default constructor
-        BinaryTree<T>();
+        BinaryTree();
 
         // copy constructor
-        BinaryTree<T>(BinaryTree* binary_tree);
+        BinaryTree(BinaryTree* binary_tree);
 
         // de-constructor
         ~BinaryTree();
 
         // add root method
-        BinaryTree<T>& add_root(const T &data);
+        BinaryTree& add_root(const T &data);
 
         // add left method
-        BinaryTree<T>& add_left(const T &parent_data, const T &child_data);
+        BinaryTree& add_left(const T &parent_data, const T &child_data);
 
         // add right method
-        BinaryTree<T>& add_right(const T &parent_data, const T &child_data);
+        BinaryTree& add_right(const T &parent_data, const T &child_data);
 
         // output
         // using other typename symbol
@@ -65,18 +66,18 @@ namespace ariel {
                 Node * current;
             public:
             preorder_iterator(Node * node = nullptr) : current(node) {}
-            T &operator*() const { return current->data; }
+            T &operator*() const { return this->current->data; }
             preorder_iterator& operator++() { return *this; }
             preorder_iterator operator++(int value) { return *this; }
             bool operator==(const preorder_iterator &it) const { return false; }
             bool operator!=(const preorder_iterator &it) const { return false; }
             preorder_iterator& operator=(const preorder_iterator &iterator) { return iterator; }
-            T *operator->() const { T data; return data; }
+            T *operator->() const { return &(this->current->data); }
             int size() const { return 0; }
         };
 
-        preorder_iterator begin_preorder() const { return preorder_iterator(); }
-        preorder_iterator end_preorder() const { return preorder_iterator(); }
+        preorder_iterator begin_preorder() { return preorder_iterator(this->root); }
+        preorder_iterator end_preorder() { return preorder_iterator(); }
 
         // inorder iterator
         class inorder_iterator {
@@ -84,18 +85,20 @@ namespace ariel {
             Node * current;
         public:
             inorder_iterator(Node * node = nullptr) : current(node) {}
-            T &operator*() const { return current->data; }
+            T &operator*() const { return this->current->data; }
             inorder_iterator& operator++() { return *this; }
             inorder_iterator operator++(int value) { return *this; }
             bool operator==(const inorder_iterator &it) const { return false; }
             bool operator!=(const inorder_iterator &it) const { return false; }
             inorder_iterator& operator=(const inorder_iterator &iterator) { return iterator; }
-            T *operator->() const { T data; return data; }
+            T *operator->() const { return &(this->current->data); }
             int size() const { return 0; }
         };
 
-        inorder_iterator begin_inorder() const { return inorder_iterator(); }
-        inorder_iterator end_inorder() const { return inorder_iterator(); }
+        inorder_iterator begin() { return begin_inorder(); }
+        inorder_iterator end() { return end_inorder(); }
+        inorder_iterator begin_inorder() { return inorder_iterator(this->root); }
+        inorder_iterator end_inorder() { return inorder_iterator(); }
 
         // postorder iterator
         class postorder_iterator {
@@ -103,18 +106,18 @@ namespace ariel {
             Node * current;
         public:
             postorder_iterator(Node * node = nullptr) : current(node) {}
-            T &operator*() const { return current->data; }
+            T &operator*() const { return this->current->data; }
             postorder_iterator& operator++() { return *this; }
             postorder_iterator operator++(int value) { return *this; }
             bool operator==(const postorder_iterator &it) const { return false; }
             bool operator!=(const postorder_iterator &it) const { return false; }
             postorder_iterator& operator=(const postorder_iterator &iterator) { return iterator; }
-            T *operator->() const { T data; return data; }
+            T *operator->() const { return &(this->current->data);}
             int size() const { return 0; }
         };
 
-        postorder_iterator begin_postorder() const { return postorder_iterator(); }
-        postorder_iterator end_postorder() const { return postorder_iterator(); }
+        postorder_iterator begin_postorder() { return postorder_iterator(this->root); }
+        postorder_iterator end_postorder() { return postorder_iterator(); }
 
     };
 }
