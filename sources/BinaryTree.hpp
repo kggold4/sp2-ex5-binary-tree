@@ -96,7 +96,7 @@ namespace ariel {
 
         // copy constructor
         BinaryTree(BinaryTree<T> &other) {
-            if(other.root == nullptr) { this->root = nullptr; }
+            if(other.empty()) { this->root = nullptr; }
             else { node_recursive_copy(other.root, this->root); }
         }
 
@@ -179,7 +179,7 @@ namespace ariel {
         public:
 
             // default constructor
-            iterator(const Order order = Order::INORDER, Node *node = nullptr) : current_node(node), order(order) {
+            iterator(const Order order = Order::INORDER, Node *node = nullptr) : order(order), current_node(node) {
                 if(this->current_node != nullptr) {
 
                     //preorder
@@ -237,8 +237,38 @@ namespace ariel {
                 }
             }
 
-            T &operator*() const { return this->current_node->data; }
-            T *operator->() const { return &(this->current_node->data); }
+            // operator ++ int
+            iterator operator++(int) {
+                iterator iter = *this;
+                if(this->order == Order::PREORDER) {
+                    if(this->st.empty()) {
+                        this->current_node = nullptr;
+                        return iter;
+                    }
+                    this->current_node = this->st.top();
+                    this->st.pop();
+
+                    if(this->current_node->right != nullptr) { this->st.push(this->current_node->right); }
+                    if(this->current_node->left != nullptr) { this->st.push(this->current_node->left); }
+                } else if(this->order == Order::INORDER) {
+                    if(!this->st.empty() || this->current_node->right != nullptr) {
+                        this->current_node = this->current_node->right;
+
+                        while(this->current_node != nullptr) {
+                            this->st.push(this->current_node);
+                            this->current_node = this->current_node->left;
+                        }
+                        this->current_node = this->st.top();
+                        this->st.pop();
+                    } else { this->current_node = nullptr; }
+                } else {
+                    if(!this->help_list.empty()) {
+                        this->current_node = this->help_list.front();
+                        this->help_list.pop_front();
+                    } else { this->current_node = nullptr; }
+                }
+                return iter;
+            }
 
             // operator ++
             iterator &operator++() {
@@ -273,39 +303,8 @@ namespace ariel {
                 return *this;
             }
 
-            // operator ++ int
-            iterator operator++(int) {
-                iterator iter = *this;
-                if(this->order == Order::PREORDER) {
-                    if(this->st.empty()) {
-                        this->current_node = nullptr;
-                        return iter;
-                    }
-                    this->current_node = this->st.top();
-                    this->st.pop();
-
-                    if(this->current_node->right != nullptr) { this->st.push(this->current_node->right); }
-                    if(this->current_node->left != nullptr) { this->st.push(this->current_node->left); }
-                } else if(this->order == Order::INORDER) {
-                    if(!this->st.empty() || this->current_node->right != nullptr) {
-                        this->current_node = this->current_node->right;
-
-                        while(this->current_node != nullptr) {
-                            this->st.push(this->current_node);
-                            this->current_node = this->current_node->left;
-                        }
-                        this->current_node = this->st.top();
-                        this->st.pop();
-                    } else { this->current_node = nullptr; }
-                } else {
-                    if(!this->help_list.empty()) {
-                        this->current_node = this->help_list.front();
-                        this->help_list.pop_front();
-                    } else { this->current_node = nullptr; }
-                }
-                return iter;
-            }
-
+            T &operator*() const { return this->current_node->data; }
+            T *operator->() const { return &(this->current_node->data); }
             bool operator==(const iterator &other) const { return this->current_node == other.current_node; }
             bool operator!=(const iterator &other) const { return this->current_node != other.current_node; }
         };
